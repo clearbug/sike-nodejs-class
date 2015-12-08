@@ -8,6 +8,9 @@ module.exports = function(child, parent){
 	if(parent){
 		result.prototype = new parent();
 		result.prototype.constructor = result;
+		result.__super__ = parent;
+	}else{
+		result.__super__ = Object;
 	}
 	for(var prop in child){
 		if(prop !== 'initialize'){
