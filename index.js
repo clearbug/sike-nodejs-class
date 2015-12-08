@@ -18,10 +18,17 @@ module.exports = function(child, parent){
 		}
 	}
 	result.prototype.super = function(){
-		var funcName = arguments[0];
-		var funcArgu = Array.prototype.slice.call(arguments, 1); 
-		return result.__super__.prototype[funcName].apply(this, funcArgu);
-	};
+		var cur_class = result;
+		return function(){
+			var funcName = arguments[0];
+			var funcArgu = Array.prototype.slice.call(arguments, 1); 
+			var tmp = cur_class;
+			cur_class = cur_class.__super__;
+			var rst = cur_class.prototype[funcName].apply(this, funcArgu);
+			cur_class = tmp;
+			return rst;
+		};
+	}();
 	
 	return result;
 }
