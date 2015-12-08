@@ -17,6 +17,11 @@ module.exports = function(child, parent){
 			result.prototype[prop] = child[prop];
 		}
 	}
+	result.prototype.super = function(){
+		var funcName = arguments[0];
+		var funcArgu = Array.prototype.slice.call(arguments, 1); 
+		return result.__super__.prototype[funcName].apply(this, funcArgu);
+	};
 	
 	return result;
 }
