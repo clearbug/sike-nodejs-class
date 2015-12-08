@@ -1,7 +1,14 @@
-module.exports = function(argObj){
-	if(argObj.initialize){
-		return argObj.initialize;
+module.exports = function(parent){
+	var child;
+	if(parent.initialize){
+		child = parent.initialize;
 	}else{
-		return function(){};
+		child = function(){};
 	}
+	for(var prop in parent){
+		if(prop !== 'initialize'){
+			child.prototype[prop] = parent[prop];
+		}
+	}
+	return child;
 }
