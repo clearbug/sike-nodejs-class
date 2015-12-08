@@ -1,14 +1,19 @@
-module.exports = function(parent){
-	var child;
-	if(parent.initialize){
-		child = parent.initialize;
+module.exports = function(child, parent){
+	var result;
+	if(child.initialize){
+		result = child.initialize;
 	}else{
-		child = function(){};
+		result = function(){};
 	}
-	for(var prop in parent){
+	if(parent){
+		result.prototype = new parent();
+		result.prototype.constructor = result;
+	}
+	for(var prop in child){
 		if(prop !== 'initialize'){
-			child.prototype[prop] = parent[prop];
+			result.prototype[prop] = child[prop];
 		}
 	}
-	return child;
+	
+	return result;
 }
